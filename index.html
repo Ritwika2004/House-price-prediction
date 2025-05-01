@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Predictor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #f4f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+        .container {
+            max-width: 600px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .form-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 0.75rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .prediction {
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: #e8f4f8;
+            border-left: 5px solid #3498db;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>House Price Predictor</h1>
+        <p>Enter house details to get an instant price prediction!</p>
+    </header>
+
+    <div class="container">
+        <div class="form-card">
+            <form action="/predict" method="post">
+                <!-- Numeric Features -->
+                {% for feature in numeric_features %}
+                <div class="form-group">
+                    <label for="{{ feature }}">{{ feature }}:</label>
+                    <input type="number" id="{{ feature }}" name="{{ feature }}" required step="any">
+                </div>
+                {% endfor %}
+
+                <!-- Categorical Features -->
+                {% for feature, values in categorical_features.items() %}
+                <div class="form-group">
+                    <label for="{{ feature }}">{{ feature }}:</label>
+                    <select id="{{ feature }}" name="{{ feature }}" required>
+                        {% for value in values %}
+                        <option value="{{ value }}">{{ value }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                {% endfor %}
+
+                <button type="submit">Predict Price</button>
+            </form>
+
+            {% if prediction %}
+            <div class="prediction">{{ prediction }}</div>
+            {% endif %}
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 House Price Predictor. All rights reserved.</p>
+    </footer>
+</body>
+</html>
